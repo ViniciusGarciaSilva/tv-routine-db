@@ -15,15 +15,15 @@ exports.get = function (req, res, next) {
 
 exports.post = function (req, res, next) {
     routineData.createRoutine(req.body);
-    res.status(201).send('Create routine: '+ req.body);
+    res.status(201).send('Routine created!');
 };
 
 exports.put = function (req, res, next) {
-    routineData.updateRoutine(req.body);
-    res.status(201).send("Put routine: "+ req.body);
+    routineData.updateRoutine(req.body, req.params.date);
+    res.status(201).send('Routine updated!');
 };
 
 exports.delete = function (req, res, next) {
-    routineData.deleteroutine(req.params.date);
-    res.status(200).send("Delete routine: "+ req.params.date);
+    routineData.deleteRoutine(req.params.date);
+    res.status(200).send('Routine deleted!');
 };
