@@ -9,8 +9,8 @@ var bodyParser = __importDefault(require('body-parser'))
 
 var app = express.default()
 app.use(bodyParser.default.text())
-app.use(bodyParser.default.urlencoded({ extended: true }))
-app.use(bodyParser.default.json())
+app.use(bodyParser.default.urlencoded({ limit: '50mb', extended: true }))
+app.use(bodyParser.default.json({limit: '50mb'}))
 app.use('/', require('./routes/index.route'))
 app.use('/routine', require('./routes/routine.route'))
 

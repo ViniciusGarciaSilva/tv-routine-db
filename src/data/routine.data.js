@@ -33,7 +33,7 @@ exports.readRoutine = readRoutine;
 
 function updateRoutine(routine, date) {
   console.log(`Updating Routine where date: '${date}' with `, routine );
-  sqlite.run(`UPDATE routines SET 
+  sqlite.run(`UPDATE routines SET  
     date = '${routine.date}',
     channel = '${routine.channel}'
     WHERE date = '${date}'`);

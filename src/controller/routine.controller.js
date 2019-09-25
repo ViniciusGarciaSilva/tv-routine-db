@@ -14,8 +14,11 @@ exports.get = function (req, res, next) {
 }
 
 exports.post = function (req, res, next) {
-    routineData.createRoutine(req.body);
-    res.status(201).send('Routine created!');
+    const data = req.body.data
+    for(let i=0; i<data.length; i++) {
+        routineData.createRoutine(data[i]);
+    }
+    res.status(201).send('Routines created!');
 };
 
 exports.put = function (req, res, next) {
