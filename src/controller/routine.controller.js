@@ -15,6 +15,7 @@ exports.get = function (req, res, next) {
 
 exports.post = function (req, res, next) {
     const data = req.body.data
+    console.log(data.length)
     for(let i=0; i<data.length; i++) {
         routineData.createRoutine(data[i]);
     }
