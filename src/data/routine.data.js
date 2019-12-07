@@ -1,47 +1,76 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 
-var sqlite = require('sqlite-sync');
-sqlite.connect('routine.db');
+const { Client } = require('pg');
 
-function createRoutine(routine) {
+const getClient = () => {
+  return new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
+  });
+}
+
+
+const responseHandler = client => (error, res) => {
+  if (error)
+    throw error;
+  client.end()
+};
+
+async function createRoutine(routine) {
+  const client = getClient();
+  await client.connect();
   console.log("Creating Routine: ", routine);
-  sqlite.run(
+  client.query(
     `INSERT INTO routines (date, channel) VALUES (
-      '${routine.date}', 
-      '${routine.channel}'
-    )`
+      $1,
+      $2
+    )`,
+    [routine.date, routine.channel],
+    responseHandler(client)
   );
 }
 exports.createRoutine = createRoutine;
 
-function readRoutines() {
+async function readRoutines() {
+  const client = getClient();
+  await client.connect();
   console.log('Reading all Routines');
-  var rows = sqlite.run("SELECT * FROM routines");
-  console.log('rows:', rows);
-  return (rows);
+  const res = await client.query("SELECT * FROM routines");
+  console.log('rows:', res.rows);
+  client.end();
+  return (res.rows);
 }
 exports.readRoutines = readRoutines;
 
-function readRoutine(date) {
+async function readRoutine(date) {
+  const client = getClient();
+  await client.connect();
   console.log('Reading Routine where date: ' + date);
-  var rows = sqlite.run(`SELECT * FROM routines WHERE date = '${date}'`);
-  console.log('rows:', rows);
-  return (rows);
+  const res = await client.query(`SELECT * FROM routines WHERE date = '${date}'`);
+  console.log('rows:', res.rows);
+  return (res.rows);
 }
 exports.readRoutine = readRoutine;
 
-function updateRoutine(routine, date) {
-  console.log(`Updating Routine where date: '${date}' with `, routine );
-  sqlite.run(`UPDATE routines SET   
+async function updateRoutine(routine, date) {
+  const client = getClient();
+  await client.connect();
+  console.log(`Updating Routine where date: '${date}' with `, routine);
+  client.query(`UPDATE routines SET
     date = '${routine.date}',
     channel = '${routine.channel}'
-    WHERE date = '${date}'`);
+    WHERE date = '${date}'`,
+    responseHandler(client)
+  );
 }
 exports.updateRoutine = updateRoutine;
 
-function deleteRoutine(date) {
+async function deleteRoutine(date) {
+  const client = getClient();
+  await client.connect();
   console.log("Deleting Routine where date: " + date);
-  sqlite.run(`DELETE FROM routines WHERE date = '${date}' `);
+  client.query(`DELETE FROM routines WHERE date = '${date}'`,
+    responseHandler(client));
 }
 exports.deleteRoutine = deleteRoutine;
