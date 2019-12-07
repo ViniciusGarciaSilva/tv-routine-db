@@ -3,13 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 
 const routineData = require('../data/routine.data');
 
-exports.getAll = function (req, res, next) {
-    var routines = routineData.readRoutines();
+exports.getAll = async function (req, res, next) {
+    var routines = await routineData.readRoutines();
     res.status(200).send(routines);
 };
 
-exports.get = function (req, res, next) {
-    const routine = routineData.readRoutine(req.params.date);
+exports.get = async function (req, res, next) {
+    const routine = await routineData.readRoutine(req.params.date);
     res.status(200).send(routine);
 }
 

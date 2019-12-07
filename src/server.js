@@ -1,7 +1,14 @@
 const app = require('./app')
+const https = require('https');
+const fs = require('fs');
 
+const options = {
+  key: fs.readFileSync("./key.pem"),
+  cert: fs.readFileSync("./cert.pem")
+};
 // Load HTTP module
 const port = normalizaPort(process.env.PORT || '8000')
+console.log(port);
 
 function normalizaPort (val) {
   const port = parseInt(val, 10)
@@ -14,6 +21,4 @@ function normalizaPort (val) {
   return false
 }
 
-app.listen(port, function () { // passa a porta a ser escutada e da um console log
-  console.log(`app listening on port ${port}`)
-})
+https.createServer(options, app).listen(port);
