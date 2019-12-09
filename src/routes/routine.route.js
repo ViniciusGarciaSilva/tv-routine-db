@@ -12,4 +12,5 @@ router.get('/:date', routineController.get);
 router.post('/', routineController.post);
 router.put('/:date', routineController.put);
 router.delete('/:date', routineController.delete);
+router.post('/clear', routineController.clear)
 module.exports = router

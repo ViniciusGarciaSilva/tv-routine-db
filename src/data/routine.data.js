@@ -74,3 +74,12 @@ async function deleteRoutine(date) {
     responseHandler(client));
 }
 exports.deleteRoutine = deleteRoutine;
+
+async function clearRoutines() {
+  const client = getClient();
+  await client.connect();
+  console.log("Deleting Routines");
+  client.query(`DELETE FROM routines`,
+    responseHandler(client));
+}
+exports.clearRoutines = clearRoutines;

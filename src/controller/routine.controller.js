@@ -31,3 +31,8 @@ exports.delete = function (req, res, next) {
     routineData.deleteRoutine(req.params.date);
     res.status(200).send('Routine deleted!');
 };
+
+exports.clear = function (req, res, next) {
+    routineData.clearRoutines();
+    res.status(200).send('Routines cleared!');
+};
