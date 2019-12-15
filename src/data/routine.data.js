@@ -49,7 +49,7 @@ async function readRoutine(date) {
   console.log('Reading Routine where date: ' + date);
   const res = await client.query(`SELECT * FROM routines WHERE date = '${date}'`);
   console.log('rows:', res.rows);
-  client.end()
+  client.end();
   return (res.rows);
 }
 exports.readRoutine = readRoutine;
